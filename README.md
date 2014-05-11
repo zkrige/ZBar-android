@@ -6,8 +6,8 @@ Android dropin to scan barcodes using ZBar
 
 Usage:
 ======
-1. compile zbar-android
-2. add zbar-android to your libs folder
+1. import zbar-android into eclipse
+2. add zbar-android as a library project to your project
 3. declare the activity in your android manifest as follows
 ```
 <application
