@@ -2,12 +2,15 @@ package com.zayinkrige.barcode;
 
 import java.io.IOException;
 
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.AutoFocusCallback;
 
@@ -21,7 +24,26 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	public CameraPreview(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
-	
+
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	private void setupAutoFocus(Camera camera) {
+		/*
+		 * Set camera to continuous focus if supported, otherwise use software
+		 * auto-focus. Only works for API level >=9.
+		 */
+
+		Camera.Parameters parameters = camera.getParameters();
+		for (String f : parameters.getSupportedFocusModes()) {
+			if (f == Parameters.FOCUS_MODE_CONTINUOUS_PICTURE) {
+				parameters.setFocusMode(Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+				camera.setParameters(parameters);
+				autoFocusCallback = null;
+				break;
+			}
+		}
+
+	}
+
 	@SuppressWarnings("deprecation")
 	public CameraPreview(Context context, Camera camera, PreviewCallback previewCb, AutoFocusCallback autoFocusCb) {
 		super(context);
@@ -29,17 +51,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		previewCallback = previewCb;
 		autoFocusCallback = autoFocusCb;
 
-		/*
-		 * Set camera to continuous focus if supported, otherwise use software
-		 * auto-focus. Only works for API level >=9.
-		 */
-		/*
-		 * Camera.Parameters parameters = camera.getParameters(); for (String f
-		 * : parameters.getSupportedFocusModes()) { if (f ==
-		 * Parameters.FOCUS_MODE_CONTINUOUS_PICTURE) {
-		 * mCamera.setFocusMode(Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-		 * autoFocusCallback = null; break; } }
-		 */
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			setupAutoFocus(camera);
+		}
 
 		// Install a SurfaceHolder.Callback so we get notified when the
 		// underlying surface is created and destroyed.
