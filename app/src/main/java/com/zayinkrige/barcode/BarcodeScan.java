@@ -6,8 +6,6 @@ package com.zayinkrige.barcode;
  */
 
 
-import com.zayinkrige.barcode.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;

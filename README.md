@@ -1,14 +1,12 @@
 ZBar-android
 ============
 
-Android dropin to scan barcodes using ZBar
-
+Android dropin to scan barcodes using ZBar (original source : https://github.com/herbyme/zbar)
 
 Usage:
 ======
-1. import zbar-android into eclipse
-2. add zbar-android as a library project to your project
-3. declare the activity in your android manifest as follows
+1. add zbar-android as a library dependency to your project
+2. declare the activity in your android manifest as follows
 ```
 <application
 	.
