@@ -2,3 +2,7 @@ bin
 gen
 import-summary.txt
 local.properties
+.gradle
+.idea
+app/build
+build
